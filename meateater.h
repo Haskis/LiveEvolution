@@ -12,15 +12,7 @@ class MeatEater : public LivingElement
 public:
 
     MeatEater(Brain* brain);
-
-
-    //Inherited from LivingElement
-    virtual void checkoutEnviroment(Map& map);
-    virtual void reactToEnviroment();
-    std::vector<float> structoreGene() const;
-    std::vector<float> behaviourGene() const;
-    void updateStructure(const std::vector<float>& gene);
-    void updateBehaviour(const std::vector<float>* gene);
+    virtual ~MeatEater();
 
     //Inherited from Element
     virtual void handleIntersection(Element *e);

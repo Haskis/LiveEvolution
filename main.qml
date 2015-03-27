@@ -1,28 +1,21 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 
+import ZPR 1.0
+
 ApplicationWindow {
+    id: root
     visible: true
-    width: 640
-    height: 480
+    width: 800
+    height: 400
     title: qsTr("Hello World")
-
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("File")
-            MenuItem {
-                text: qsTr("&Open")
-                onTriggered: console.log("Open action triggered");
-            }
-            MenuItem {
-                text: qsTr("Exit")
-                onTriggered: Qt.quit();
-            }
+    Rectangle{
+        anchors.fill: parent
+        MapView{
+            antialiasing: true
+            smooth: true
+            map: mapa
+            anchors.fill: parent
         }
-    }
-
-    Text {
-        text: qsTr("Hello World")
-        anchors.centerIn: parent
     }
 }

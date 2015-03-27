@@ -4,6 +4,11 @@ PlantElement::PlantElement()
 {
 }
 
+PlantElement::~PlantElement()
+{
+
+}
+
 void PlantElement::handleIntersection(Element* e)
 {
 

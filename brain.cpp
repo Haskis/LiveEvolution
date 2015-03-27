@@ -3,3 +3,8 @@
 Brain::Brain()
 {
 }
+
+Brain::~Brain()
+{
+
+}

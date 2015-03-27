@@ -6,6 +6,7 @@ class PhysicsEngine
 {
 public:
     PhysicsEngine();
+    virtual ~PhysicsEngine();
     virtual void updateEnviroment(Map& map) = 0;
 
 };

@@ -12,6 +12,7 @@ class PlantElement : public Element
 
 public:
     PlantElement();
+    virtual ~PlantElement();
 
     virtual void handleIntersection(Element *e);
     virtual void handleIntersection(MeatEater *e);

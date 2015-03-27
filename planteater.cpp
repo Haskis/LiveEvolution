@@ -3,54 +3,30 @@
 PlantEater::PlantEater(Brain *brain):
     LivingElement(brain)
 {
+    _color = QColor(Qt::green);
 }
 
-void PlantEater::checkoutEnviroment(Map& map)
-{
-
-}
-
-void PlantEater::reactToEnviroment()
-{
-
-}
-
-std::vector<float> PlantEater::structoreGene() const
-{
-
-}
-
-std::vector<float> PlantEater::behaviourGene() const
-{
-
-}
-
-void PlantEater::updateStructure(const std::vector<float>& gene)
-{
-
-}
-
-void PlantEater::updateBehaviour(const std::vector<float>* gene)
+PlantEater::~PlantEater()
 {
 
 }
 
 void PlantEater::handleIntersection(Element* e)
 {
-
+   //qDebug()<<"Handling intersection in PlantEater";
+    e->handleIntersection(this);
 }
 
 void PlantEater::handleIntersection(MeatEater* e)
 {
-
+    //qDebug()<<"PE with ME";
 }
 
 void PlantEater::handleIntersection(PlantElement* e)
 {
-
 }
 
 void PlantEater::handleIntersection(PlantEater* e)
 {
-
+    _collidingElements.push_back(e);
 }

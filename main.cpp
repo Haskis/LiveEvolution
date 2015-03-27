@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
+#include <QDebug>
 
 #include <simulation.h>
 
@@ -9,37 +10,47 @@
 #include <meateater.h>
 #include "planteater.h"
 #include "annbrain.h"
+
+#include <mapview.h>
+
 int main(int argc, char *argv[])
 {
+
     QApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    qmlRegisterType<MapView>("ZPR", 1, 0, "MapView");
+    QString reason;
+    qmlRegisterUncreatableType<Map>("ZPR", 1, 0, "Map",reason);
 
     // Create map 1000x1000
-    Map *map = new Map(1000, 1000);
+    Map *map = new Map(800, 400);
 
     //Add food in a random way
-    for(int i=0; i< 100; i++){
+    for(int i=0; i< 0; i++){
         Element* elem = new PlantElement;
 
         elem->setRandomPosition(map->boundingRect());
+
         map->addFood(elem);
     }
 
     //Add MeatEaters in a random way
-    for(int i=0; i<20; i++){
+    for(int i=0; i<10; i++){
         LivingElement* lElem = new MeatEater(new ANNBrain);
 
         lElem->setRandomPosition(map->boundingRect());
+//        lElem->setXPosition(750);
+//        lElem->setYPosition(350);
         map->addAnimal(lElem);
     }
 
     //Add PlantEaters in a random way
-    for(int i=0; i<20; i++){
+    for(int i=0; i<10; i++){
         LivingElement* lElem = new PlantEater(new ANNBrain);
 
         lElem->setRandomPosition(map->boundingRect());
+//        lElem->setXPosition(720);
+//        lElem->setYPosition(320);
         map->addAnimal(lElem);
     }
 
@@ -55,6 +66,7 @@ int main(int argc, char *argv[])
     // from begining
     simulation.start();
 
+    qDebug()<<map->getAnimalElemensts().size();
 
     return app.exec();
 }

@@ -17,11 +17,11 @@ SOURCES += main.cpp \
     simulation.cpp \
     mutator.cpp \
     basicmutator.cpp \
-    population.cpp \
-    food.cpp \
     physicsengine.cpp \
     simplephysicsengine.cpp \
-    logger.cpp
+    logger.cpp \
+    mapview.cpp \
+    animalnode.cpp
 
 RESOURCES += qml.qrc
 
@@ -43,8 +43,8 @@ HEADERS += \
     simulation.h \
     mutator.h \
     basicmutator.h \
-    population.h \
-    food.h \
     physicsengine.h \
     simplephysicsengine.h \
-    logger.h
+    logger.h \
+    mapview.h \
+    animalnode.h

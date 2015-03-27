@@ -4,18 +4,30 @@
 #include "population.h"
 #include "map.h"
 
-Simulation::Simulation(Map* map, Mutator *mutator, PhysicsEngine* engine)
+Simulation::Simulation(Map* map, Mutator *mutator, PhysicsEngine* engine):
+    QObject(nullptr),
+    _map(map),
+    _mutator(mutator),
+    _pEngine(engine)
 {
+    _timer.setInterval(10);
+    connect(&_timer,SIGNAL(timeout()),this,SLOT(goOneStep()));
+    connect(this,SIGNAL(upadate()),this,SLOT(goOneStep()),Qt::QueuedConnection);
+}
+
+Simulation::~Simulation()
+{
+
 }
 
 void Simulation::start()
 {
-
+    _timer.start();
 }
 
 void Simulation::stop()
 {
-
+    _timer.stop();
 }
 
 void Simulation::setStepInterval(int ms)
@@ -45,6 +57,10 @@ void Simulation::setNewMap(Map* map)
 
 void Simulation::goOneStep()
 {
+    static int i=0;
+    if(!(i%1000))
+        qDebug()<<i;
+    i++;
     const std::vector<LivingElement*> animals = _map->getAnimalElemensts();
 
     //Population is not ready to evolve, continue
@@ -61,8 +77,6 @@ void Simulation::goOneStep()
 
         //Update position and velocity of each LivingElement based on element outputs (motors)
         _pEngine->updateEnviroment(*_map);
-
-
     }
     //Population is ready to evolve
     else{
@@ -81,9 +95,9 @@ void Simulation::goOneStep()
             food->setRandomPosition(_map->boundingRect());
         }
     }
+    //emit upadate();
 }
 
-bool Simulation::populationReady()
-{
-
+bool Simulation::populationReady(){
+    return false;
 }

@@ -14,6 +14,8 @@ public:
     virtual void updateEnviroment(Map& map);
 private:
 
+    float _suppression;
+
 };
 
 #endif // SIMPLEPHYSICSENGINE_H

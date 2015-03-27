@@ -7,6 +7,7 @@ class Brain
 {
 public:
     Brain();
+    virtual ~Brain();
 
     virtual void think(std::vector<float>& input, std::vector<float>& output) = 0;
 

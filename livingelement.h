@@ -5,16 +5,25 @@
 #include "annbrain.h"
 #include <vector>
 #include <map>
+#include "animalnode.h"
 class LivingElement : public Element
 {
+    friend class Population;
+    friend class AnimalNode;
+//    friend class AnimalNode::MotorNode;
+
+
+
+
+public:
+
     struct Sensor{
         Sensor();
 
-        bool _r;
-        bool _g;
-        bool _b;
+        QColor _color;
         float _position;
         float _range;
+        float _angle;
     };
     struct Motor{
         Motor();
@@ -25,18 +34,24 @@ class LivingElement : public Element
         float _power;
     };
 
-
-public:
-
     ///
     /// \brief LivingElement
     /// \param brain concrete brain used by this element, brain is managed and deleted by this object
     ///
     LivingElement(Brain *brain);
+    ~LivingElement();
 
 
     float xVelocity() const;
     float yVelocity() const;
+    float aVelocity() const;
+
+    void setXVelocity(float velocity);
+    void setYVelocity(float velocity);
+    void setAVelocity(float velocity);
+
+    float mass() const;
+
     ///
     /// \brief checkoutEnviroment updates element according to enviroment
     /// \param map
@@ -45,14 +60,14 @@ public:
     /// it can update object sensors state. While looking for elements near this element collision table is updated
     /// to speed up other functions (PhysicsEngine)
     ///
-    virtual void checkoutEnviroment(Map& map) = 0;
+    virtual void checkoutEnviroment(Map& map);
 
     ///
     /// \brief reactToEnviroment Updates element output based on input
     ///
     /// In inherited classes this function should set element state (e.g. velocity) based on sensor data
     ///
-    virtual void reactToEnviroment() = 0;
+    virtual void reactToEnviroment();
 
     ///
     /// \brief structoreGene returns genetic information about structure of this element
@@ -61,7 +76,7 @@ public:
     /// This function enables classes which are resposible for mutation to extract
     /// genetic information about structure of this object. Genetic infromation is divided into two
     /// parts: structure (sensors, motors position and number) and behaviour ( brain )
-    virtual std::vector<float> structoreGene() const = 0;
+    virtual std::vector<float> structureGene() const;
 
     ///
     /// \brief behaviourGene returns genetic information about behaviour of this element
@@ -70,16 +85,21 @@ public:
     /// This function enables classes which are resposible for mutation to extract
     /// genetic information about behaviour of this object. Genetic infromation is divided into two
     /// parts: structure (sensors, motors position and number) and behaviour ( brain )
-    virtual std::vector<float> behaviourGene() const = 0;
+    virtual std::vector<float> behaviourGene() const;
 
 
-    virtual void updateStructure(const std::vector<float>& gene) = 0;
-    virtual void updateBehaviour(const std::vector<float>* gene) = 0;
+    virtual void updateStructure(const std::vector<float>& gene);
+    virtual void updateBehaviour(const std::vector<float>* gene);
+
+    const std::vector<Sensor> getSensors() const;
+    const std::vector<Motor> getMotors() const;
 
 private:
 
     float _xVelocity;  ///< Holds information about current velocity on map (xAxis), (look _yVelocity)
     float _yVelocity;  ///< Holds information about current velocity on map (yAxis), (look _xVelocity)
+    float _aVelocity;  ///< Holds information about current angular velocity
+    float _mass;       ///< Hodls information about animal mass
 
     bool _alive;
     unsigned int livingTime;
@@ -91,6 +111,7 @@ private:
     /// Sensors are attached to LivingElement in some angular position <0:360). Each sensor has it's
     /// own maximum range
     ///
+
     std::vector<Sensor> _sensors;
 
     ///
@@ -113,6 +134,8 @@ private:
     ///
     /// Brain is used to translate sensors inputs into motors outputs. It's mostly unique for each LivingElement
     Brain* _brain;
+
+    bool checkIntersection(QVector2D circleCentre, float circleRadius, QVector2D segmentBegin, QVector2D segmentEnd);
 };
 
 #endif // LIVINGELEMENT_H

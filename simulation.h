@@ -7,10 +7,31 @@
 #include "simplephysicsengine.h"
 #include <QTimer>
 
-class Simulation
+#include <QObject>
+///
+/// \brief The Simulation class responsible for enviroment updates
+///
+/// This class enables to start and stop simulation. Function goOneStep
+/// is called in some predefined time intervals to update enviroment and
+/// population. Physics Engine object is used to update animals position on map
+/// according to rules defined in it and according to animal currnet state.
+/// When population is ready to evolve Mutator object is used to create new
+/// population and whole cycle goes again.
+///
+///
+class Simulation: public QObject
 {
+    Q_OBJECT
 public:
-    Simulation(Map *map, Mutator *mutator, PhysicsEngine* engine);
+
+    ///
+    /// \brief Simulation constructor must initialize internal objects
+    /// \param map object with population and enviroment data
+    /// \param mutator object used to evolve population
+    /// \param engine object used to update position according to defined laws of physics
+    ///
+    explicit Simulation(Map *map, Mutator *mutator, PhysicsEngine* engine);
+    ~Simulation();
 
     ///
     /// \brief start starts simulation
@@ -31,13 +52,6 @@ public:
     void setStepInterval(int ms);
 
     ///
-    /// \brief evolveAnimals used to create new population from an old one
-    ///
-    /// If populationReady() returns true, then in means that population is ready to be evaluated and
-    /// modified by Mutator. This function is used to create new population and switch it with an old one
-    void evolveAnimals();
-
-    ///
     /// \brief setNewPhysicsEngine set new physcis engine in a dynamic way
     /// \param engine pointer to new PhysicsEngine, class manages and destroys this object
     ///
@@ -56,16 +70,6 @@ public:
     ///
     void setNewMap(Map* map);
 
-public slots:
-
-    ///
-    /// \brief goOneStep update simulation by little amout of time
-    ///
-    /// This function is called by timer overflow when simulation is started. Elements position and
-    /// internal state is updated. If population is ready evolveAnimals function is called
-    ///
-    void goOneStep();
-
 protected:
 
     ///
@@ -75,7 +79,26 @@ protected:
     /// Population is ready to evolve if some condtion is fulfilled, eg. all LivingElements died
     bool populationReady();
 
+private slots:
+
+    ///
+    /// \brief goOneStep update simulation by little amout of time
+    ///
+    /// This function is called by timer overflow when simulation is started. Elements position and
+    /// internal state is updated. If population is ready evolveAnimals function is called
+    ///
+    void goOneStep();
+
+signals:
+    void upadate();
 private:
+
+    ///
+    /// \brief evolveAnimals used to create new population from an old one
+    ///
+    /// If populationReady() returns true, then in means that population is ready to be evaluated and
+    /// modified by Mutator. This function is used to create new population and switch it with an old one
+    void evolveAnimals();
 
     Map *_map;
     Mutator *_mutator;
