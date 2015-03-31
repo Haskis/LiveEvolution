@@ -25,12 +25,12 @@ void AnimalNode::SensorsNode::updateGeometry(LivingElement* element)
     g->allocate(element->_sensors.size()*2);
     QSGGeometry::ColoredPoint2D *v = g->vertexDataAsColoredPoint2D();
 
-    int counter =0;
+    int counter = 0;
     for(const LivingElement::Sensor& sensor: element->getSensors()){
         v[counter++].set(element->xPosition(),element->yPosition(),
-                         sensor._color.red(),sensor._color.green(),sensor._color.blue(),sensor._color.alpha());
+                         sensor._color.red()+counter,sensor._color.green(),sensor._color.blue(),sensor._color.alpha());
         v[counter++].set(element->xPosition()+sensor._range*sin(sensor._position+element->rotation()),element->yPosition()+sensor._range*cos(sensor._position+element->rotation()),
-                         sensor._color.red(),sensor._color.green(),sensor._color.blue(),sensor._color.alpha());
+                         sensor._color.red()+counter,sensor._color.green(),sensor._color.blue(),sensor._color.alpha());
     }
 }
 
@@ -88,7 +88,7 @@ void AnimalNode::updateCircleTable()
 
     for(int i=0; i<unitCircleTableX.size(); i++){
         v[i].set(unitCircleTableX[i]*_lElement->radius()+_lElement->xPosition(), unitCircleTableY[i]*_lElement->radius()+_lElement->yPosition(),
-                 _lElement->color().red(),_lElement->color().green(),_lElement->color().blue(),_lElement->color().alpha());
+                 _lElement->color().red()+i/15.0,_lElement->color().green(),_lElement->color().blue(),_lElement->color().alpha());
     }
 }
 
