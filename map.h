@@ -2,7 +2,7 @@
 #define MAP_H
 
 
-class Element;
+class PlantElement;
 class LivingElement;
 
 class Population;
@@ -29,7 +29,7 @@ public:
     ///
     /// Adds food element into Food object container. Food elements
     /// can be accessed using getFoodElements() function
-    void addFood(Element* food);
+    void addFood(PlantElement* food);
 
     ///
     /// \brief addAnimal adds animal into Population internal container
@@ -57,7 +57,7 @@ public:
     ///
     /// Food elements are extruded from Food model. No changes can be made
     /// using this function to the model
-    const std::vector<Element*>& getFoodElements();
+    const std::vector<PlantElement*>& getFoodElements();
 
     ////
     /// \brief updateFoodModel emits proper signals from food model to update view
@@ -80,21 +80,22 @@ public:
     /// PhysicsEngine
     QRect boundingRect();
 
+
+    void cleanDead();
+
     void confirmValueChanges();
-    void confirmStructoreChanges();
+    void confirmStructureChanges();
 
 signals:
     void valuesChanged();
+    void structureChanged();
 private:
 
     int _xSize;
     int _ySize;
 
-
-    std::vector<Element*> _foodElements;
+    std::vector<PlantElement*> _foodElements;
     std::vector<LivingElement*> _populationElements;
-
-    QQmlApplicationEngine* engine;
 };
 
 #endif // MAP_H

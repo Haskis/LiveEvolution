@@ -1,38 +1,33 @@
 #ifndef ANIMALNODE_H
 #define ANIMALNODE_H
 
-#include <QSGGeometryNode>
+#include <basenode.h>
 #include <livingelement.h>
-#include <QSGVertexColorMaterial>
-class AnimalNode : public QSGGeometryNode
+class AnimalNode : public BaseNode
 {
 
     class SensorsNode: public QSGGeometryNode{
         friend class AnimalNode;
-        SensorsNode();
+        explicit SensorsNode();
         void updateGeometry(LivingElement* element);
     };
-    class MotorNode: public QSGGeometryNode{
-        explicit MotorNode();
+    class MotorsNode: public QSGGeometryNode{
+        friend class AnimalNode;
+        explicit MotorsNode();
         void updateGeometry(LivingElement* element);
     };
 
 public:
     explicit AnimalNode(LivingElement *element);
 
-    void updateGeometry();
-signals:
-
-public slots:
+    virtual void updateGeometry();
 
 private:
-    void updateCircleTable();
 
     LivingElement* _lElement;
     std::vector<QSGGeometry::ColoredPoint2D> circleTable;
     std::vector<float> unitCircleTableX;
     std::vector<float> unitCircleTableY;
-    void initCircleTable();
 };
 
 #endif // ANIMALNODE_H

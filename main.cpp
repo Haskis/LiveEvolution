@@ -13,21 +13,28 @@
 
 #include <mapview.h>
 
+#include <QtQml>
+
+#include <QQmlApplicationEngine>
+#include <QSurfaceFormat>
+#include <QQuickWindow>
+
 int main(int argc, char *argv[])
 {
 
     QApplication app(argc, argv);
 
+    qmlRegisterType<SelectedElementData>("ZPR", 1, 0, "SelectedElementData");
     qmlRegisterType<MapView>("ZPR", 1, 0, "MapView");
     QString reason;
     qmlRegisterUncreatableType<Map>("ZPR", 1, 0, "Map",reason);
 
     // Create map 1000x1000
-    Map *map = new Map(800, 400);
+    Map *map = new Map(800, 600);
 
     //Add food in a random way
-    for(int i=0; i< 0; i++){
-        Element* elem = new PlantElement;
+    for(int i=0; i< 20; i++){
+        PlantElement* elem = new PlantElement;
 
         elem->setRandomPosition(map->boundingRect());
 
@@ -35,7 +42,7 @@ int main(int argc, char *argv[])
     }
 
     //Add MeatEaters in a random way
-    for(int i=0; i<10; i++){
+    for(int i=0; i<30; i++){
         LivingElement* lElem = new MeatEater(new ANNBrain);
 
         lElem->setRandomPosition(map->boundingRect());
@@ -45,7 +52,7 @@ int main(int argc, char *argv[])
     }
 
     //Add PlantEaters in a random way
-    for(int i=0; i<10; i++){
+    for(int i=0; i<30; i++){
         LivingElement* lElem = new PlantEater(new ANNBrain);
 
         lElem->setRandomPosition(map->boundingRect());
@@ -61,12 +68,28 @@ int main(int argc, char *argv[])
     //Create simulation object, when simulation starts loop begins
     Simulation simulation(map, mutator, pEngine);
 
+
+    QQmlApplicationEngine* engine;
+
+    engine = new QQmlApplicationEngine;
+
+    engine->rootContext()->setContextProperty("mapa", map);
+    engine->rootContext()->setContextProperty("simulation", &simulation);
+    //engine->rootContext()->setContextProperty("food", _food);
+
+    engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
+    QObject *topLevel = engine->rootObjects()[0];
+    QQuickWindow* window = qobject_cast<QQuickWindow*>(topLevel);
+    QSurfaceFormat format = window->format();
+    format.setSamples(16);
+    window->setFormat(format);
+
+
     // Starts simulation, after each iteration condition for cycle end is checked
     // If cycle ends new population is created based on old population and new cycle runs
     // from begining
-    simulation.start();
+    //simulation.start();
 
-    qDebug()<<map->getAnimalElemensts().size();
 
     return app.exec();
 }

@@ -16,7 +16,7 @@ class PlantElement;
 /// Each element can be placed in some space on map and can interact with other
 /// elements using handleIntersection functions
 ///
-///
+
 class Element
 {
 public:
@@ -25,6 +25,9 @@ public:
 
     QColor color() const;
     void setColor(const QColor& color);
+
+    bool selected() const;
+    void setSelected(bool selected);
 
     float radius() const;
     void setRadius(float radius);
@@ -36,6 +39,8 @@ public:
     void setXPosition(float xPosition);
     void setYPosition(float yPosition);
     void setRandomPosition(const QRect& rect);
+
+    void clearColidingElements();
 
     ///
     /// \brief handleIntersection
@@ -51,6 +56,8 @@ public:
 
     const std::vector<const Element*> getCollidingElements();
 protected:
+
+    bool _selected;    ///< Used by GUI to change color if selected by mouse
 
     float _xPosition;  ///< Holds information about current position on map (xAxis), (look _yPosition)
     float _yPosition;  ///< Holds information about current position on map (yAxis), (look _xPosition)

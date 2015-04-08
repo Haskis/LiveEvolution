@@ -13,8 +13,6 @@ class LivingElement : public Element
 //    friend class AnimalNode::MotorNode;
 
 
-
-
 public:
 
     struct Sensor{
@@ -45,12 +43,12 @@ public:
     float xVelocity() const;
     float yVelocity() const;
     float aVelocity() const;
+    float energy() const;
 
     void setXVelocity(float velocity);
     void setYVelocity(float velocity);
     void setAVelocity(float velocity);
 
-    float mass() const;
 
     ///
     /// \brief checkoutEnviroment updates element according to enviroment
@@ -87,12 +85,19 @@ public:
     /// parts: structure (sensors, motors position and number) and behaviour ( brain )
     virtual std::vector<float> behaviourGene() const;
 
-
     virtual void updateStructure(const std::vector<float>& gene);
     virtual void updateBehaviour(const std::vector<float>* gene);
 
     const std::vector<Sensor> getSensors() const;
     const std::vector<Motor> getMotors() const;
+
+protected:
+    ///
+    /// \brief _energy current energy level
+    ///
+    /// LivingElement lives till his energy level is above 0 or till he is killed. Moving around map
+    /// consumes energy, also time passing by consumes energy. Energy can be restored by eating other elements.
+    float _energy;
 
 private:
 
@@ -123,19 +128,13 @@ private:
     std::vector<Motor> _motors;
 
     ///
-    /// \brief _energy current energy level
-    ///
-    /// LivingElement lives till his energy level is above 0 or till he is killed. Moving around map
-    /// consumes energy, also time passing by consumes energy. Energy can be restored by eating other elements.
-    float _energy;
-
-    ///
     /// \brief _brain describes LivingElement behaviour
     ///
     /// Brain is used to translate sensors inputs into motors outputs. It's mostly unique for each LivingElement
     Brain* _brain;
 
     bool checkIntersection(QVector2D circleCentre, float circleRadius, QVector2D segmentBegin, QVector2D segmentEnd);
+    void senseElement(Element *elem, float max);
 };
 
 #endif // LIVINGELEMENT_H

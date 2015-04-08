@@ -21,7 +21,10 @@ SOURCES += main.cpp \
     simplephysicsengine.cpp \
     logger.cpp \
     mapview.cpp \
-    animalnode.cpp
+    animalnode.cpp \
+    shader.cpp \
+    foodnode.cpp \
+    basenode.cpp
 
 RESOURCES += qml.qrc
 
@@ -47,4 +50,9 @@ HEADERS += \
     simplephysicsengine.h \
     logger.h \
     mapview.h \
-    animalnode.h
+    animalnode.h \
+    shader.h \
+    foodnode.h \
+    basenode.h
+
+OTHER_FILES +=

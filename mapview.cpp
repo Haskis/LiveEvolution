@@ -1,83 +1,108 @@
 #include "mapview.h"
 
+
+SelectedElementData::SelectedElementData(QObject* parent):
+    QObject(parent)
+{
+    _energy = 0;
+}
+
+float SelectedElementData::energy(){
+    return _energy;
+}
+
+void SelectedElementData::update(LivingElement* element)
+{
+    _energy = element->energy();
+    emit energyChanged(_energy);
+}
+
+
 MapView::MapView(QQuickItem *parent) :
     QQuickItem(parent),
-    _map(nullptr)
+    _map(nullptr),
+    _selectedElement(new SelectedElementData(this))
 {
-    setFlag(QQuickItem::ItemHasContents);
+    setFlags(QQuickItem::ItemHasContents);
+    setAcceptedMouseButtons(Qt::AllButtons);
+}
+
+
+SelectedElementData*MapView::selectedElement() const{
+    return _selectedElement;
 }
 
 QSGNode*MapView::updatePaintNode(QSGNode* oldNode, QQuickItem::UpdatePaintNodeData*)
 {
     if(!_map)
         return oldNode;
-    //qDebug()<<"Update";
 
     QSGNode* n = oldNode;
     if (!n) {
-        n = new QSGNode;//AnimalNode();
-
+        n = new QSGNode;
     }
     if(_structureChanged){
         n->removeAllChildNodes();
         for(int i=0;i<_map->getAnimalElemensts().size(); i++){
             n->appendChildNode(new AnimalNode(_map->getAnimalElemensts()[i]));
         }
+        for(int i=0; i<_map->getFoodElements().size(); i++){
+            n->appendChildNode(new FoodNode(_map->getFoodElements()[i]));
+        }
         _structureChanged = false;
     }
     if(_valuesChanged){
         for(int i=0; i<n->childCount();i++){
-            dynamic_cast<AnimalNode*>(n->childAtIndex(i))->updateGeometry();
+            static_cast<BaseNode*>(n->childAtIndex(i))->updateGeometry();
         }
         _valuesChanged = false;
     }
 
-
     return n;
+}
 
-//    //Little trick (dont call updateGeometry twice);
-//    if(_colorChanged){
-//        n->updateColor(_color);
-//        _colorChanged = false;
-//    }
-//    if(_lineWidthChanged){
-//        n->updateLineWidth(_lineWidth);
-//        _lineWidthChanged = false;
-//    }
+void MapView::mousePressEvent(QMouseEvent* event)
+{
+    if(!_map)
+        return;
 
-//    if (_geometryChanged) {
-//        n->updateGeometry(boundingRect(),samples,samplesEkg, _samplesShown, _samplesOffset);
-//        _geometryChanged = false;
-//    }
 
-//    return n;
+    for(LivingElement* elem : _map->getAnimalElemensts()){
+        QVector2D vec = QVector2D(elem->xPosition()-event->x(),elem->yPosition()-event->y());
+        if(vec.length()<elem->radius()){
+            elem->setSelected(true);
+            _selectedElement->update(elem);
+            _map->confirmValueChanges();
+            break;
+        }
+        else{
+            elem->setSelected(false);
+            _map->confirmValueChanges();
+        }
+    }
 
 }
 
-//void MapView::geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry)
-//{
-////    _geometryChanged = true;
-
-//    update();
-//    //    QQuickItem::geometryChanged(newGeometry, oldGeometry);
-//}
-
-Map*MapView::map()
-{
+Map* MapView::map(){
 
 }
 
-void MapView::setMap(Map* map)
-{
+void MapView::setMap(Map* map){
     _map = map;
     qDebug()<<"set map";
-    connect(map,SIGNAL(valuesChanged()),this,SLOT(test()));
+    connect(map,SIGNAL(valuesChanged()),this,SLOT(valuesChanged()));
+    connect(map,SIGNAL(structureChanged()),this,SLOT(structureChanged()));
 }
 
-void MapView::test()
-{
+void MapView::valuesChanged(){
     _valuesChanged = true;
     update();
-    //qDebug()<<"Test";
 }
+
+void MapView::structureChanged(){
+    _structureChanged = true;
+    update();
+}
+
+
 

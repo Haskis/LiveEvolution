@@ -1,6 +1,7 @@
 #include "simulation.h"
 
 #include "livingelement.h"
+#include "plantelement.h"
 #include "population.h"
 #include "map.h"
 
@@ -77,8 +78,12 @@ void Simulation::goOneStep()
 
         //Update position and velocity of each LivingElement based on element outputs (motors)
         _pEngine->updateEnviroment(*_map);
+
+        //Move dead animals to
+        _map->cleanDead();
     }
     //Population is ready to evolve
+
     else{
         //Log population info into file
         _map->logPopulation();
@@ -91,7 +96,7 @@ void Simulation::goOneStep()
         for(LivingElement *animal: animals){
             animal->setRandomPosition(_map->boundingRect());
         }
-        for(Element* food: _map->getFoodElements() ){
+        for(PlantElement* food: _map->getFoodElements() ){
             food->setRandomPosition(_map->boundingRect());
         }
     }

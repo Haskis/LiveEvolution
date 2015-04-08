@@ -3,10 +3,10 @@
 Element::Element():
     _xPosition(0),
     _yPosition(0),
-    _radius(10),
-    _rotation(0.8),
-    _color(Qt::red)
-
+    _radius(5),
+    _rotation(0),
+    _color(Qt::red),
+    _selected(false)
 {
 
 }
@@ -22,6 +22,14 @@ QColor Element::color() const{
 
 void Element::setColor(const QColor& color){
     _color = color;
+}
+
+bool Element::selected() const{
+    return _selected;
+}
+
+void Element::setSelected(bool selected){
+    _selected = selected;
 }
 
 float Element::radius() const{
@@ -60,6 +68,10 @@ void Element::setRandomPosition(const QRect& rect){
     _xPosition = rect.x() + (float)rand()*(rect.width())/RAND_MAX;
     _yPosition = rect.y() + (float)rand()*(rect.height())/RAND_MAX;
 
+}
+
+void Element::clearColidingElements(){
+    _collidingElements.clear();
 }
 
 const std::vector<const Element*> Element::getCollidingElements(){

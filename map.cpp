@@ -1,29 +1,13 @@
 #include "map.h"
-#include <QtQml>
-
-#include <QQmlApplicationEngine>
-#include <QSurfaceFormat>
-#include <QQuickWindow>
+#include <livingelement.h>
 Map::Map(int xSize, int ySize):
     QObject(nullptr)
 {
     _xSize = xSize;
     _ySize = ySize;
-
-    engine = new QQmlApplicationEngine;
-
-    engine->rootContext()->setContextProperty("mapa", this);
-    //engine->rootContext()->setContextProperty("food", _food);
-
-    engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
-    QObject *topLevel = engine->rootObjects()[0];
-    QQuickWindow* window = qobject_cast<QQuickWindow*>(topLevel);
-    QSurfaceFormat format = window->format();
-    format.setSamples(16);
-    window->setFormat(format);
 }
 
-void Map::addFood(Element* food){
+void Map::addFood(PlantElement* food){
     _foodElements.push_back(food);
 }
 
@@ -36,7 +20,7 @@ void Map::logPopulation()
 
 }
 
-const std::vector<Element*>& Map::getFoodElements(){
+const std::vector<PlantElement*>& Map::getFoodElements(){
     return _foodElements;
 }
 
@@ -48,12 +32,29 @@ QRect Map::boundingRect(){
     return QRect(0,0, _xSize,_ySize);
 }
 
-void Map::confirmValueChanges()
-{
+void Map::cleanDead(){
+    //std::remove_if(_populationElements.begin(),_populationElements.end(),[](LivingElement* e){return e->energy()<0; });
+
+    for (auto it = _populationElements.begin(); it != _populationElements.end() /* not hoisted */; /* no increment */)
+    {
+        if ((*it)->energy()<0)
+        {
+            delete *it;
+            _populationElements.erase(it);
+            qDebug()<<"DELETED";
+            confirmStructureChanges();
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
+
+void Map::confirmValueChanges(){
     emit valuesChanged();
 }
 
-void Map::confirmStructoreChanges()
-{
-
+void Map::confirmStructureChanges(){
+    emit structureChanged();
 }

@@ -33,6 +33,7 @@ public:
     explicit Simulation(Map *map, Mutator *mutator, PhysicsEngine* engine);
     ~Simulation();
 
+public slots:
     ///
     /// \brief start starts simulation
     ///
@@ -51,6 +52,7 @@ public:
     ///
     void setStepInterval(int ms);
 
+public:
     ///
     /// \brief setNewPhysicsEngine set new physcis engine in a dynamic way
     /// \param engine pointer to new PhysicsEngine, class manages and destroys this object
@@ -91,6 +93,7 @@ private slots:
 
 signals:
     void upadate();
+
 private:
 
     ///

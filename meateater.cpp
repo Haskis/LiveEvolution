@@ -3,14 +3,13 @@
 MeatEater::MeatEater(Brain* brain):
     LivingElement(brain)
 {
+    _color = QColor(Qt::red);
 }
 
 MeatEater::~MeatEater()
 {
 
 }
-
-
 
 void MeatEater::handleIntersection(PlantElement* e){
     //qDebug()<<"MM with Food";
@@ -19,6 +18,7 @@ void MeatEater::handleIntersection(PlantElement* e){
 void MeatEater::handleIntersection(PlantEater* e)
 {
     //qDebug()<<"MM with PE";
+    _energy += 0.2;
 }
 
 void MeatEater::handleIntersection(MeatEater* e)

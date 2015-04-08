@@ -19,7 +19,8 @@ void PlantEater::handleIntersection(Element* e)
 
 void PlantEater::handleIntersection(MeatEater* e)
 {
-    //qDebug()<<"PE with ME";
+    _energy -= 0.1;
+    //qDebug()<<_energy;
 }
 
 void PlantEater::handleIntersection(PlantElement* e)

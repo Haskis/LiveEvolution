@@ -10,12 +10,10 @@ class SimplePhysicsEngine : public PhysicsEngine
 {
 public:
     SimplePhysicsEngine();
-
     virtual void updateEnviroment(Map& map);
+
 private:
-
     float _suppression;
-
 };
 
 #endif // SIMPLEPHYSICSENGINE_H

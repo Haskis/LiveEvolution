@@ -12,7 +12,7 @@ public:
     virtual void think(std::vector<float>& input, std::vector<float>& output);
 
     virtual std::vector<float> gene() const;
-    virtual void updateGene(const std::vector<float>& gene);
+    virtual void updateGene(const std::vector<int>& gene);
 
 };
 
