@@ -66,6 +66,12 @@ ApplicationWindow {
                 Text{
                     text: "Energy:" + mapView.selectedElement.energy.toFixed(2)
                 }
+                Text{
+                    text: "MotorOne:" + mapView.selectedElement.motorOnePower.toFixed(2)
+                }
+                Text{
+                    text: "MotorTwo:" + mapView.selectedElement.motorTwoPower.toFixed(2)
+                }
             }
 
         }

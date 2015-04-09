@@ -12,14 +12,25 @@ class SelectedElementData: public QObject{
 
 public:
     Q_PROPERTY(float energy READ energy NOTIFY energyChanged)
+    Q_PROPERTY(float motorOnePower READ motorOnePower NOTIFY motorOnePowerChanged)
+    Q_PROPERTY(float motorTwoPower READ motorTwoPower NOTIFY motorTwoPowerChanged)
+
+
     explicit SelectedElementData(QObject *parent = NULL);
 
     float energy();
+    float motorOnePower();
+    float motorTwoPower();
     void update(LivingElement *element);
+
 signals:
     void energyChanged(float energy);
+    void motorOnePowerChanged(float power);
+    void motorTwoPowerChanged(float power);
 private:
     float _energy;
+    float _motorOnePower;
+    float _motorTwoPower;
 };
 
 

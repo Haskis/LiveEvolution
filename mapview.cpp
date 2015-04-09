@@ -11,10 +11,24 @@ float SelectedElementData::energy(){
     return _energy;
 }
 
+float SelectedElementData::motorOnePower()
+{
+    return _motorOnePower;
+}
+
+float SelectedElementData::motorTwoPower()
+{
+    return _motorTwoPower;
+}
+
 void SelectedElementData::update(LivingElement* element)
 {
     _energy = element->energy();
+    _motorOnePower = element->getMotors()[0]._power;
+    _motorTwoPower = element->getMotors()[1]._power;
     emit energyChanged(_energy);
+    emit motorOnePowerChanged(_motorOnePower);
+    emit motorTwoPowerChanged(_motorTwoPower);
 }
 
 
@@ -43,12 +57,13 @@ QSGNode*MapView::updatePaintNode(QSGNode* oldNode, QQuickItem::UpdatePaintNodeDa
     }
     if(_structureChanged){
         n->removeAllChildNodes();
-        for(int i=0;i<_map->getAnimalElemensts().size(); i++){
-            n->appendChildNode(new AnimalNode(_map->getAnimalElemensts()[i]));
-        }
         for(int i=0; i<_map->getFoodElements().size(); i++){
             n->appendChildNode(new FoodNode(_map->getFoodElements()[i]));
         }
+        for(int i=0;i<_map->getAnimalElemensts().size(); i++){
+            n->appendChildNode(new AnimalNode(_map->getAnimalElemensts()[i]));
+        }
+
         _structureChanged = false;
     }
     if(_valuesChanged){

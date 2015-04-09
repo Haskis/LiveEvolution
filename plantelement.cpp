@@ -2,7 +2,8 @@
 
 PlantElement::PlantElement()
 {
-    _color = QColor(Qt::blue);
+    _color = QColor(0,0,255,100);
+    _radius = 15;
 }
 
 PlantElement::~PlantElement()

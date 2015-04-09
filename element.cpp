@@ -3,7 +3,7 @@
 Element::Element():
     _xPosition(0),
     _yPosition(0),
-    _radius(5),
+    _radius(10),
     _rotation(0),
     _color(Qt::red),
     _selected(false)

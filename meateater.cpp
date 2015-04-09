@@ -3,7 +3,7 @@
 MeatEater::MeatEater(Brain* brain):
     LivingElement(brain)
 {
-    _color = QColor(Qt::red);
+    _color = QColor(255,0,0,10);
 }
 
 MeatEater::~MeatEater()

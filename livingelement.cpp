@@ -12,35 +12,35 @@ LivingElement::LivingElement(Brain* brain):
     Motor a;
     a._position = -M_PI/4;
     a._power = 0.0;
-    a._rForce = 1.0;
-    a._aForce = 0.001;
+    a._rForce = 0.1;
+    a._aForce = 0.00005;
     _motors.push_back(a);
 
     a._position = M_PI/4;
     a._power = 0.0;
-    a._rForce = 1.0;
-    a._aForce = -0.001;
+    a._rForce = 0.1;
+    a._aForce = -0.00005;
     _motors.push_back(std::move(a));
 
 
     Sensor s;
     s._position = 0;
-    s._range = 25;
+    s._range = 50;
     _sensors.push_back(s);
+
     s._position = M_PI/7;
-    s._range = 25;
     _sensors.push_back(s);
+
     s._position = -M_PI/7;
-    s._range = 25;
     _sensors.push_back(s);
+
     s._position = M_PI/4;
-    s._range = 25;
     _sensors.push_back(s);
+
     s._position = -M_PI/4;
-    s._range = 25;
     _sensors.push_back(s);
+
     s._position = M_PI;
-    s._range = 25;
     _sensors.push_back(std::move(s));
 }
 
@@ -129,9 +129,9 @@ void LivingElement::reactToEnviroment(){
 
     //Parse brain input
     for(const Sensor& sensor: _sensors){
-        input.push_back(sensor._color.red());
-        input.push_back(sensor._color.green());
-        input.push_back(sensor._color.blue());
+        input.push_back(sensor._color.red()/255.0f);
+        input.push_back(sensor._color.green()/255.0f);
+        input.push_back(sensor._color.blue()/255.0f);
     }
     _brain->think(input, output);
 
@@ -140,6 +140,7 @@ void LivingElement::reactToEnviroment(){
 
     for(Motor& motor: _motors){
         motor._power = output.back();
+        qDebug()<<"POWER"<<motor._power;
         output.pop_back();
     }
 }

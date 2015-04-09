@@ -46,10 +46,10 @@ void SimplePhysicsEngine::updateEnviroment(Map& map)
             animal->setYVelocity(std::max(yVel-_suppression*yVelS, 0.0f));
         }
         if(aVel<0){
-            animal->setAVelocity(std::min(aVel+_suppression*aVelS, 0.0f));
+            animal->setAVelocity(std::min(aVel+_suppression*10*aVelS, 0.0f));
         }
         else if(aVel>0){
-            animal->setAVelocity(std::max(aVel-_suppression*aVelS, 0.0f));
+            animal->setAVelocity(std::max(aVel-_suppression*10*aVelS, 0.0f));
         }
 
         animal->setXPosition(animal->xPosition()+animal->xVelocity());
