@@ -33,16 +33,14 @@ int main(int argc, char *argv[])
     Map *map = new Map(800, 600);
 
     //Add food in a random way
-    for(int i=0; i< 20; i++){
+    for(int i=0; i< 100; i++){
         PlantElement* elem = new PlantElement;
-
         elem->setRandomPosition(map->boundingRect());
-
         map->addFood(elem);
     }
 
     //Add MeatEaters in a random way
-    for(int i=0; i<30; i++){
+    for(int i=0; i<10; i++){
         LivingElement* lElem = new MeatEater(new ANNBrain);
 
         lElem->setRandomPosition(map->boundingRect());
@@ -52,7 +50,7 @@ int main(int argc, char *argv[])
     }
 
     //Add PlantEaters in a random way
-    for(int i=0; i<30; i++){
+    for(int i=0; i<100; i++){
         LivingElement* lElem = new PlantEater(new ANNBrain);
 
         lElem->setRandomPosition(map->boundingRect());

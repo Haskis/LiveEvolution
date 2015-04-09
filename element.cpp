@@ -3,10 +3,11 @@
 Element::Element():
     _xPosition(0),
     _yPosition(0),
-    _radius(10),
+    _radius(3),
     _rotation(0),
     _color(Qt::red),
-    _selected(false)
+    _selected(false),
+    _energy(100)
 {
 
 }
@@ -26,6 +27,14 @@ void Element::setColor(const QColor& color){
 
 bool Element::selected() const{
     return _selected;
+}
+
+float Element::energy() const{
+    return _energy;
+}
+
+void Element::resetEnergy(){
+    _energy = 100;
 }
 
 void Element::setSelected(bool selected){

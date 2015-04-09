@@ -5,8 +5,7 @@ LivingElement::LivingElement(Brain* brain):
     _brain(brain),
     _xVelocity(0),
     _yVelocity(0),
-    _aVelocity(0),
-    _energy(100)
+    _aVelocity(0)
 {
     //In this version assume that bot structure is static
     Motor a;
@@ -24,23 +23,29 @@ LivingElement::LivingElement(Brain* brain):
 
 
     Sensor s;
-    s._position = 0;
-    s._range = 50;
+    s._position = -M_PI/4;
+    s._range = 20;
     _sensors.push_back(s);
 
-    s._position = M_PI/7;
+    s._position = M_PI/100;
+    s._range = 70;
     _sensors.push_back(s);
 
-    s._position = -M_PI/7;
+    s._position = -M_PI/100;
+    s._range = 70;
+    _sensors.push_back(s);
+
+    s._position = M_PI/10;
+    s._range = 35;
+    _sensors.push_back(s);
+
+    s._position = -M_PI/10;
+    s._range = 35;
     _sensors.push_back(s);
 
     s._position = M_PI/4;
-    _sensors.push_back(s);
 
-    s._position = -M_PI/4;
-    _sensors.push_back(s);
-
-    s._position = M_PI;
+    s._range = 20;
     _sensors.push_back(std::move(s));
 }
 
@@ -61,9 +66,6 @@ float LivingElement::aVelocity() const{
     return _aVelocity;
 }
 
-float LivingElement::energy() const{
-    return _energy;
-}
 
 void LivingElement::setXVelocity(float velocity){
     if(_xVelocity != velocity){
@@ -112,7 +114,7 @@ void LivingElement::checkoutEnviroment(Map& map){
     for(LivingElement *animal: animals){
         if(animal == this)
             continue;
-        senseElement(animal, max);
+        senseElement((Element*)animal, max);
     }
 
     //For each animal check if he's in range

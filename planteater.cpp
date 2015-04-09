@@ -26,6 +26,7 @@ void PlantEater::handleIntersection(MeatEater* e)
 void PlantEater::handleIntersection(PlantElement* e)
 {
     _energy += 0.2;
+    e->handleIntersection(this);
 }
 
 void PlantEater::handleIntersection(PlantEater* e)

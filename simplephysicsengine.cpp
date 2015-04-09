@@ -56,13 +56,13 @@ void SimplePhysicsEngine::updateEnviroment(Map& map)
         animal->setYPosition(animal->yPosition()+animal->yVelocity());
         animal->setRotation(animal->rotation()+animal->aVelocity());
 
-        if(animal->getCollidingElements().size() != 0){
-            //qDebug()<<"Coliding"<<animal->getCollidingElements().size();
-            animal->setXVelocity(-animal->xVelocity());
+//        if(animal->getCollidingElements().size() != 0){
+//            //qDebug()<<"Coliding"<<animal->getCollidingElements().size();
+//            animal->setXVelocity(-animal->xVelocity());
 
-            animal->setYVelocity(-animal->yVelocity());
-            animal->clearColidingElements();
-        }
+//            animal->setYVelocity(-animal->yVelocity());
+//            animal->clearColidingElements();
+//        }
 
 
         //Check boundaries

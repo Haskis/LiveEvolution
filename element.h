@@ -26,6 +26,9 @@ public:
     QColor color() const;
     void setColor(const QColor& color);
 
+    float energy() const;
+    void resetEnergy();
+
     bool selected() const;
     void setSelected(bool selected);
 
@@ -56,6 +59,15 @@ public:
 
     const std::vector<const Element*> getCollidingElements();
 protected:
+
+protected:
+    ///
+    /// \brief _energy current energy level
+    ///
+    /// LivingElement lives till his energy level is above 0 or till he is killed. Moving around map
+    /// consumes energy, also time passing by consumes energy. Energy can be restored by eating other elements.
+    float _energy;
+
 
     bool _selected;    ///< Used by GUI to change color if selected by mouse
 

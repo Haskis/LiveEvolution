@@ -24,8 +24,7 @@ FoodNode::FoodNode(PlantElement* element):
     updateGeometry();
 }
 
-void FoodNode::updateGeometry()
-{
+void FoodNode::updateGeometry(){
 
     //Draw animal body
     updateCircleTable(_pElement->radius(),_pElement->xPosition(),_pElement->yPosition());

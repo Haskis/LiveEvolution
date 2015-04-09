@@ -14,12 +14,13 @@ public:
 
     virtual void think(std::vector<float>& input, std::vector<float>& output);
 
-    virtual std::vector<float> gene() const;
+    virtual std::vector<float> gene();
     virtual void updateGene(const std::vector<int>& gene);
 
 
 private:
     FANN::neural_net _neuralNet;
+    FANN::connection *_connections;
 };
 
 #endif // ANNBRAIN_H

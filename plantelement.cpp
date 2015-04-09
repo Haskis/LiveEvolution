@@ -24,6 +24,9 @@ void PlantElement::handleIntersection(MeatEater* e)
 
 void PlantElement::handleIntersection(PlantEater* e)
 {
+    qDebug()<<"????";
+    _energy -= 1;
+    qDebug()<<_energy;
     // Maybe here should be some kind of limited resources ( for now its unlimited so do nothing)
     ;
 }

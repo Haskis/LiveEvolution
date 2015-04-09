@@ -1,5 +1,6 @@
 #include "map.h"
 #include <livingelement.h>
+#include <plantelement.h>
 Map::Map(int xSize, int ySize):
     QObject(nullptr)
 {
@@ -48,6 +49,17 @@ void Map::cleanDead(){
         {
             ++it;
         }
+    }
+
+    for (auto it = _foodElements.begin(); it != _foodElements.end() /* not hoisted */; /* no increment */)
+    {
+        if ((*it)->energy()<0)
+        {
+            (*it)->setRandomPosition(boundingRect());
+            (*it)->resetEnergy();
+        }
+        ++it;
+
     }
 }
 

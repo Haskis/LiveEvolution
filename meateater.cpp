@@ -11,8 +11,16 @@ MeatEater::~MeatEater()
 
 }
 
+void MeatEater::handleIntersection(Element* e)
+{
+   // qDebug()<<"Handling intersection in meatEater";
+    e->handleIntersection(this);
+
+}
+
 void MeatEater::handleIntersection(PlantElement* e){
     //qDebug()<<"MM with Food";
+
 }
 
 void MeatEater::handleIntersection(PlantEater* e)
@@ -24,11 +32,4 @@ void MeatEater::handleIntersection(PlantEater* e)
 void MeatEater::handleIntersection(MeatEater* e)
 {
     _collidingElements.push_back(e);
-}
-
-void MeatEater::handleIntersection(Element* e)
-{
-   // qDebug()<<"Handling intersection in meatEater";
-    e->handleIntersection(this);
-
 }

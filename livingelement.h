@@ -43,7 +43,6 @@ public:
     float xVelocity() const;
     float yVelocity() const;
     float aVelocity() const;
-    float energy() const;
 
     void setXVelocity(float velocity);
     void setYVelocity(float velocity);
@@ -91,13 +90,6 @@ public:
     const std::vector<Sensor> getSensors() const;
     const std::vector<Motor> getMotors() const;
 
-protected:
-    ///
-    /// \brief _energy current energy level
-    ///
-    /// LivingElement lives till his energy level is above 0 or till he is killed. Moving around map
-    /// consumes energy, also time passing by consumes energy. Energy can be restored by eating other elements.
-    float _energy;
 
 private:
 

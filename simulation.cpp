@@ -58,10 +58,6 @@ void Simulation::setNewMap(Map* map)
 
 void Simulation::goOneStep()
 {
-    static int i=0;
-    if(!(i%1000))
-        qDebug()<<i;
-    i++;
     const std::vector<LivingElement*> animals = _map->getAnimalElemensts();
 
     //Population is not ready to evolve, continue
@@ -79,7 +75,7 @@ void Simulation::goOneStep()
         //Update position and velocity of each LivingElement based on element outputs (motors)
         _pEngine->updateEnviroment(*_map);
 
-        //Move dead animals to
+        //Move dead animals to other container
         _map->cleanDead();
     }
     //Population is ready to evolve
