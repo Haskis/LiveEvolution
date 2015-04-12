@@ -1,14 +1,17 @@
 #include "element.h"
+
 #include <QDebug>
+
 Element::Element():
-    _xPosition(0),
-    _yPosition(0),
-    _radius(3),
-    _rotation(0),
-    _color(Qt::red),
-    _selected(false),
-    _energy(100)
+    m_selected(false),
+    m_energy(100),
+    m_xPosition(0),
+    m_yPosition(0),
+    m_radius(3),
+    m_rotation(0),
+    m_color(Qt::red)
 {
+
 
 }
 
@@ -18,71 +21,72 @@ Element::~Element()
 }
 
 QColor Element::color() const{
-    return _color;
+    return m_color;
 }
 
 void Element::setColor(const QColor& color){
-    _color = color;
+    m_color = color;
 }
 
 bool Element::selected() const{
-    return _selected;
+    return m_selected;
 }
 
 float Element::energy() const{
-    return _energy;
+    return m_energy;
 }
 
 void Element::resetEnergy(){
-    _energy = 100;
+    m_energy = 100;
 }
 
 void Element::setSelected(bool selected){
-    _selected = selected;
+    m_selected = selected;
 }
 
 float Element::radius() const{
-    return _radius;
+    return m_radius;
 }
 
 void Element::setRadius(float radius){
-    _radius = radius;
+    m_radius = radius;
 }
 
 float Element::rotation() const{
-    return _rotation;
+    return m_rotation;
 }
 
 void Element::setRotation(float rotation){
-    _rotation = rotation;
+    m_rotation = rotation;
 }
 
 float Element::xPosition() const{
-    return _xPosition;
+    return m_xPosition;
 }
 
 float Element::yPosition() const{
-    return _yPosition;
+    return m_yPosition;
 }
 
 void Element::setXPosition(float xPosition){
-    _xPosition = xPosition;
+    m_xPosition = xPosition;
 }
 
 void Element::setYPosition(float yPosition){
-    _yPosition = yPosition;
+    m_yPosition = yPosition;
 }
 
 void Element::setRandomPosition(const QRect& rect){
-    _xPosition = rect.x() + (float)rand()*(rect.width())/RAND_MAX;
-    _yPosition = rect.y() + (float)rand()*(rect.height())/RAND_MAX;
+
+    m_xPosition = rect.x() + (float)rand()*(rect.width())/RAND_MAX;
+    m_yPosition = rect.y() + (float)rand()*(rect.height())/RAND_MAX;
 
 }
 
 void Element::clearColidingElements(){
-    _collidingElements.clear();
+    m_collidingElements.clear();
 }
 
 const std::vector<const Element*> Element::getCollidingElements(){
-    return _collidingElements;
+    return m_collidingElements;
 }

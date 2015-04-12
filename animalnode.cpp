@@ -1,7 +1,9 @@
-#include "animalnode.h"
-#include <QSGVertexColorMaterial>
-#include "shader.h"
 
+#include "animalnode.h"
+
+#include <QSGVertexColorMaterial>
+
+#include "shader.h"
 
 AnimalNode::SensorsNode::SensorsNode()
 {
@@ -21,18 +23,22 @@ AnimalNode::SensorsNode::SensorsNode()
 void AnimalNode::SensorsNode::updateGeometry(LivingElement* element)
 {
     QSGGeometry *g = geometry();
-    g->allocate(element->_sensors.size()*2);
+    g->allocate(element->m_sensors.size()*2);
     QSGGeometry::ColoredPoint2D *v = g->vertexDataAsColoredPoint2D();
 
     int counter = 0;
+
+    //Transparency
+    int alphaValue = 25;
+
     for(const LivingElement::Sensor& sensor: element->getSensors()){
         v[counter++].set(element->xPosition()+element->radius()*sin(sensor._position+element->rotation()),
                          element->yPosition()+ element->radius()*cos(sensor._position+element->rotation()),
-                         sensor._color.red(),sensor._color.green(),sensor._color.blue(),sensor._color.alpha());
+                         sensor._color.red(),sensor._color.green(),sensor._color.blue(),alphaValue);
 
         v[counter++].set(element->xPosition()+sensor._range*sin(sensor._position+element->rotation()),
                          element->yPosition()+sensor._range*cos(sensor._position+element->rotation()),
-                         sensor._color.red(),sensor._color.green(),sensor._color.blue(),sensor._color.alpha());
+                         sensor._color.red(),sensor._color.green(),sensor._color.blue(),alphaValue);
     }
 }
 
@@ -55,23 +61,26 @@ AnimalNode::MotorsNode::MotorsNode()
 void AnimalNode::MotorsNode::updateGeometry(LivingElement* element)
 {
     QSGGeometry *g = geometry();
-    g->allocate(element->_motors.size()*6);
+    g->allocate(element->m_motors.size()*6);
     QSGGeometry::ColoredPoint2D *v = g->vertexDataAsColoredPoint2D();
-
-    int counter = 0;
 
     // Motor width in angles
     float mW = 0.4;
 
+
+    //Transparency
+    int alphaValue = 70;
+
+    int counter = 0;
     //Draw motor ( experimental values)
     for(const LivingElement::Motor& motor: element->getMotors()){
 
         //Motor color depends on actual motor power
         QColor color = QColor(Qt::black);
+        color.setAlpha(alphaValue);
         if(motor._power>=0){
             color.setBlue(motor._power*255);
             color.setRed(0);
-
         }
         else{
             color.setBlue(0);
@@ -108,7 +117,7 @@ void AnimalNode::MotorsNode::updateGeometry(LivingElement* element)
 
 //************************************************************************************************
 AnimalNode::AnimalNode(LivingElement* element):
-    _lElement(element)
+    m_lElement(element)
 {
     QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 0);
 
@@ -126,8 +135,6 @@ AnimalNode::AnimalNode(LivingElement* element):
 
     initCircleTable();
     updateGeometry();
-
-    setRenderOrder(-1);
 }
 
 void AnimalNode::updateGeometry()
@@ -135,22 +142,22 @@ void AnimalNode::updateGeometry()
     //Check color
     QSGSimpleMaterial<State> *m;
     m = static_cast<QSGSimpleMaterial<State>* > (material());
-    if(_lElement->selected())
+    if(m_lElement->selected())
         m->state()->color = QColor(Qt::blue);
     else{
-        m->state()->color = _lElement->color();
+        m->state()->color = m_lElement->color();
     }
     //Draw animal body
-    updateCircleTable(_lElement->radius(),_lElement->xPosition(),_lElement->yPosition());
+    updateCircleTable(m_lElement->radius(),m_lElement->xPosition(),m_lElement->yPosition());
 
+    // TO DO (change so there won't be unnecesary deletion and creation)
     removeAllChildNodes();
-
     SensorsNode* sn = new SensorsNode;
-    sn->updateGeometry(_lElement);
+    sn->updateGeometry(m_lElement);
     appendChildNode(sn);
 
     MotorsNode* mn = new MotorsNode;
-    mn->updateGeometry(_lElement);
+    mn->updateGeometry(m_lElement);
     appendChildNode(mn);
 
     markDirty(QSGNode::DirtyGeometry);

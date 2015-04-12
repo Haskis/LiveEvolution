@@ -14,12 +14,13 @@ public:
     MeatEater(Brain* brain);
     virtual ~MeatEater();
 
+    virtual Type type() const ;
+
     //Inherited from Element
     virtual void handleIntersection(Element *e);
     virtual void handleIntersection(MeatEater *e);
     virtual void handleIntersection(PlantEater *e);
     virtual void handleIntersection(PlantElement *e);
-
 };
 
 #endif // MEATEATER_H

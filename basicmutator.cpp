@@ -1,12 +1,14 @@
 #include "basicmutator.h"
 
+#include "livingelement.h"
 BasicMutator::BasicMutator()
 {
 }
 
-Population*BasicMutator::mutate(const std::vector<LivingElement*>& animals)
+void BasicMutator::mutate(const std::vector<LivingElement*>& animals, LivingElement* animal)
 {
-
+    //Not ready
+    //animal->updateBehaviour(animals[0]->behaviourGene());
 }
 
 void BasicMutator::mutate(std::vector<float>& gene) const

@@ -2,12 +2,12 @@
 #define ELEMENT_H
 
 #include <QColor>
+
 #include "map.h"
 
 class MeatEater;
 class PlantEater;
 class PlantElement;
-
 
 ///
 /// \brief The Element class is a base class for all elements on board
@@ -26,6 +26,11 @@ public:
     QColor color() const;
     void setColor(const QColor& color);
 
+    ///
+    /// \brief energy() current energy level
+    ///
+    /// LivingElement lives till his energy level is above 0 or till he is killed. Moving around map
+    /// consumes energy, also time passing by consumes energy. Energy can be restored by eating other elements.
     float energy() const;
     void resetEnergy();
 
@@ -53,6 +58,7 @@ public:
     /// be invoked. handleIntersection functions describe how object should react when it colides with other element.
     ///
     virtual void handleIntersection(Element *e) = 0;
+
     virtual void handleIntersection(MeatEater *e) = 0;
     virtual void handleIntersection(PlantEater *e) = 0;
     virtual void handleIntersection(PlantElement *e) = 0;
@@ -61,22 +67,14 @@ public:
 protected:
 
 protected:
-    ///
-    /// \brief _energy current energy level
-    ///
-    /// LivingElement lives till his energy level is above 0 or till he is killed. Moving around map
-    /// consumes energy, also time passing by consumes energy. Energy can be restored by eating other elements.
-    float _energy;
+    bool m_selected;    ///< Used by GUI to change color if selected by mouse
 
-
-    bool _selected;    ///< Used by GUI to change color if selected by mouse
-
-    float _xPosition;  ///< Holds information about current position on map (xAxis), (look _yPosition)
-    float _yPosition;  ///< Holds information about current position on map (yAxis), (look _xPosition)
-    float _radius;     ///< Holds information about element radius
-    float _rotation;   ///< Holds infomation about element rotation angle (right: positive number)
-    QColor _color;     ///< Holds information about current element color
-
+    float m_energy;     ///< Stores actual energy level
+    float m_xPosition;  ///< Holds information about current position on map (xAxis), (look _yPosition)
+    float m_yPosition;  ///< Holds information about current position on map (yAxis), (look _xPosition)
+    float m_radius;     ///< Holds information about element radius
+    float m_rotation;   ///< Holds infomation about element rotation angle (right: positive number)
+    QColor m_color;     ///< Holds information about current element color
 
     ///
     /// \brief collidingElements list of colliding elements
@@ -84,7 +82,7 @@ protected:
     /// This table is updated each time checkoutEnviroment function is called, it holds pointers to Elements colliding
     /// with this element. This list is used for faster access to colliding elements in Phycisc Engine class. Only
     /// elements not traversable are collected
-    std::vector<const Element*> _collidingElements;
+    std::vector<const Element*> m_collidingElements;
 };
 
 #endif // ELEMENT_H

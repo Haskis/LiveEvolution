@@ -1,10 +1,11 @@
 #include "foodnode.h"
+
 #include <QSGVertexColorMaterial>
+
 #include "shader.h"
 
-
 FoodNode::FoodNode(PlantElement* element):
-    _pElement(element)
+    m_pElement(element)
 {
     QSGGeometry *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 0);
 
@@ -27,7 +28,7 @@ FoodNode::FoodNode(PlantElement* element):
 void FoodNode::updateGeometry(){
 
     //Draw animal body
-    updateCircleTable(_pElement->radius(),_pElement->xPosition(),_pElement->yPosition());
+    updateCircleTable(m_pElement->radius(),m_pElement->xPosition(),m_pElement->yPosition());
 
     markDirty(QSGNode::DirtyGeometry);
 }

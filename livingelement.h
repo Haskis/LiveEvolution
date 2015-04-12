@@ -1,19 +1,23 @@
 #ifndef LIVINGELEMENT_H
 #define LIVINGELEMENT_H
 
+#include <vector>
+
 #include "element.h"
 #include "annbrain.h"
-#include <vector>
-#include <map>
+#include "map.h"
 #include "animalnode.h"
 class LivingElement : public Element
 {
     friend class Population;
     friend class AnimalNode;
-//    friend class AnimalNode::MotorNode;
-
 
 public:
+
+    enum Type{
+        MEAT_EATER,
+        PLANT_EATER,
+    };
 
     struct Sensor{
         Sensor();
@@ -37,12 +41,14 @@ public:
     /// \param brain concrete brain used by this element, brain is managed and deleted by this object
     ///
     LivingElement(Brain *brain);
-    ~LivingElement();
+    virtual ~LivingElement();
 
 
     float xVelocity() const;
     float yVelocity() const;
     float aVelocity() const;
+
+    virtual Type type() const = 0;
 
     void setXVelocity(float velocity);
     void setYVelocity(float velocity);
@@ -66,14 +72,14 @@ public:
     ///
     virtual void reactToEnviroment();
 
-    ///
-    /// \brief structoreGene returns genetic information about structure of this element
-    /// \return gene is described in a form of floats array
-    ///
-    /// This function enables classes which are resposible for mutation to extract
-    /// genetic information about structure of this object. Genetic infromation is divided into two
-    /// parts: structure (sensors, motors position and number) and behaviour ( brain )
-    virtual std::vector<float> structureGene() const;
+//    ///
+//    /// \brief structoreGene returns genetic information about structure of this element
+//    /// \return gene is described in a form of floats array
+//    ///
+//    /// This function enables classes which are resposible for mutation to extract
+//    /// genetic information about structure of this object. Genetic infromation is divided into two
+//    /// parts: structure (sensors, motors position and number) and behaviour ( brain )
+//    virtual const std::vector<float>& structureGene() const;
 
     ///
     /// \brief behaviourGene returns genetic information about behaviour of this element
@@ -82,24 +88,20 @@ public:
     /// This function enables classes which are resposible for mutation to extract
     /// genetic information about behaviour of this object. Genetic infromation is divided into two
     /// parts: structure (sensors, motors position and number) and behaviour ( brain )
-    virtual std::vector<float> behaviourGene() const;
+    virtual const std::vector<float>& behaviourGene() const;
 
-    virtual void updateStructure(const std::vector<float>& gene);
-    virtual void updateBehaviour(const std::vector<float>* gene);
+    //virtual void updateStructure(const std::vector<float>& gene);
+    virtual void updateBehaviour(const std::vector<float>& gene);
 
-    const std::vector<Sensor> getSensors() const;
-    const std::vector<Motor> getMotors() const;
-
-
+    const std::vector<Sensor>& getSensors() const;
+    const std::vector<Motor>& getMotors() const;
 private:
 
-    float _xVelocity;  ///< Holds information about current velocity on map (xAxis), (look _yVelocity)
-    float _yVelocity;  ///< Holds information about current velocity on map (yAxis), (look _xVelocity)
-    float _aVelocity;  ///< Holds information about current angular velocity
-    float _mass;       ///< Hodls information about animal mass
+    float m_xVelocity;  ///< Holds information about current velocity on map (xAxis), (look _yVelocity)
+    float m_yVelocity;  ///< Holds information about current velocity on map (yAxis), (look _xVelocity)
+    float m_aVelocity;  ///< Holds information about current angular velocity
 
-    bool _alive;
-    unsigned int livingTime;
+    unsigned int m_livingTime;
 
     ///
     /// \brief _sensors sensors container
@@ -109,7 +111,7 @@ private:
     /// own maximum range
     ///
 
-    std::vector<Sensor> _sensors;
+    std::vector<Sensor> m_sensors;
 
     ///
     /// \brief _motors motors container
@@ -117,13 +119,13 @@ private:
     /// Motors enables LivingElement to move across map. Each motor power can be adjusted. Motors have
     /// predefined maximum force ( rotation, and forward moving ). Motors are attached to Living Element
     /// in some angular position <0; 360)
-    std::vector<Motor> _motors;
+    std::vector<Motor> m_motors;
 
     ///
     /// \brief _brain describes LivingElement behaviour
     ///
     /// Brain is used to translate sensors inputs into motors outputs. It's mostly unique for each LivingElement
-    Brain* _brain;
+    Brain* m_brain;
 
     bool checkIntersection(QVector2D circleCentre, float circleRadius, QVector2D segmentBegin, QVector2D segmentEnd);
     void senseElement(Element *elem, float max);

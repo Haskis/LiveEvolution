@@ -72,6 +72,9 @@ ApplicationWindow {
                 Text{
                     text: "MotorTwo:" + mapView.selectedElement.motorTwoPower.toFixed(2)
                 }
+                Text{
+                    text: "TimePassed:" + simulation.timePassed
+                }
             }
 
         }

@@ -18,12 +18,6 @@ public:
     virtual void handleIntersection(MeatEater *e);
     virtual void handleIntersection(PlantEater *e);
     virtual void handleIntersection(PlantElement *e);
-
-
-protected:
-
-
-
 };
 
 #endif // PLANTELEMENT_H

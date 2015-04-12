@@ -14,7 +14,7 @@ public:
 
 private:
 
-    PlantElement* _pElement;
+    PlantElement* m_pElement;
 };
 
 #endif // ANIMALNODE_H

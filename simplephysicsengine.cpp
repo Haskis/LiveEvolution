@@ -1,12 +1,11 @@
 #include "simplephysicsengine.h"
 
-#include <element.h>
-#include "livingelement.h"
-#include <QDebug>
 #include <math.h>
-#include <algorithm>
+
+#include "livingelement.h"
+
 SimplePhysicsEngine::SimplePhysicsEngine():
-    _suppression(0.1f)
+    m_suppression(0.1f)
 {
 }
 
@@ -34,22 +33,22 @@ void SimplePhysicsEngine::updateEnviroment(Map& map)
         float aVelS = aVel*aVel;
 
         if(xVel<0){
-            animal->setXVelocity(std::min(xVel+_suppression*xVelS, 0.0f));
+            animal->setXVelocity(std::min(xVel+m_suppression*xVelS, 0.0f));
         }
         else if(xVel>0){
-            animal->setXVelocity(std::max(xVel-_suppression*xVelS, 0.0f));
+            animal->setXVelocity(std::max(xVel-m_suppression*xVelS, 0.0f));
         }
         if(yVel<0){
-            animal->setYVelocity(std::min(yVel+_suppression*yVelS, 0.0f));
+            animal->setYVelocity(std::min(yVel+m_suppression*yVelS, 0.0f));
         }
         else if(yVel>0){
-            animal->setYVelocity(std::max(yVel-_suppression*yVelS, 0.0f));
+            animal->setYVelocity(std::max(yVel-m_suppression*yVelS, 0.0f));
         }
         if(aVel<0){
-            animal->setAVelocity(std::min(aVel+_suppression*10*aVelS, 0.0f));
+            animal->setAVelocity(std::min(aVel+m_suppression*10*aVelS, 0.0f));
         }
         else if(aVel>0){
-            animal->setAVelocity(std::max(aVel-_suppression*10*aVelS, 0.0f));
+            animal->setAVelocity(std::max(aVel-m_suppression*10*aVelS, 0.0f));
         }
 
         animal->setXPosition(animal->xPosition()+animal->xVelocity());

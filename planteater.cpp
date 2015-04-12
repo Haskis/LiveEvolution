@@ -3,7 +3,7 @@
 PlantEater::PlantEater(Brain *brain):
     LivingElement(brain)
 {
-    _color = QColor(Qt::green);
+    m_color = QColor(Qt::green);
 }
 
 PlantEater::~PlantEater()
@@ -11,25 +11,26 @@ PlantEater::~PlantEater()
 
 }
 
-void PlantEater::handleIntersection(Element* e)
-{
-   //qDebug()<<"Handling intersection in PlantEater";
+LivingElement::Type PlantEater::type() const{
+    return PLANT_EATER;
+}
+
+void PlantEater::handleIntersection(Element* e){
     e->handleIntersection(this);
 }
 
-void PlantEater::handleIntersection(MeatEater* e)
-{
-    _energy -= 0.1;
-    //qDebug()<<_energy;
+
+void PlantEater::handleIntersection(MeatEater* e){
+    Q_UNUSED(e);
+    m_energy -= 0.1;
+
 }
 
-void PlantEater::handleIntersection(PlantElement* e)
-{
-    _energy += 0.2;
+void PlantEater::handleIntersection(PlantElement* e){
+    m_energy += 0.2;
     e->handleIntersection(this);
 }
 
-void PlantEater::handleIntersection(PlantEater* e)
-{
-    _collidingElements.push_back(e);
+void PlantEater::handleIntersection(PlantEater* e){
+    m_collidingElements.push_back(e);
 }

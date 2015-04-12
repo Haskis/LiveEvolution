@@ -1,3 +1,6 @@
+#ifndef SHADER_H
+#define SHADER_H
+
 #include <QColor>
 #include <QSGSimpleMaterialShader>
 
@@ -25,6 +28,8 @@ public:
     void resolveUniforms();
 
 private:
-    int id_color;
+    int m_colorId;
 
 };
+
+#endif // SHADER_H

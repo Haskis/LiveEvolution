@@ -1,6 +1,5 @@
 #include "shader.h"
 
-
 int State::compare(const State* other) const {
     uint rgb = color.rgba();
     uint otherRgb = other->color.rgba();
@@ -43,10 +42,9 @@ QList<QByteArray> Shader::attributes() const{
 }
 
 void Shader::updateState(const State* state, const State*){
-    program()->setUniformValue(id_color, state->color);
+    program()->setUniformValue(m_colorId, state->color);
 }
 
-void Shader::resolveUniforms()
-{
-    id_color = program()->uniformLocation("color");
+void Shader::resolveUniforms(){
+    m_colorId = program()->uniformLocation("color");
 }

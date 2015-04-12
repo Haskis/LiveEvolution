@@ -2,10 +2,10 @@
 #define MAPVIEW_H
 
 #include <QQuickItem>
-#include <map.h>
-#include <animalnode.h>
-#include <foodnode.h>
 
+#include "map.h"
+#include "animalnode.h"
+#include "foodnode.h"
 
 class SelectedElementData: public QObject{
     Q_OBJECT
@@ -14,7 +14,6 @@ public:
     Q_PROPERTY(float energy READ energy NOTIFY energyChanged)
     Q_PROPERTY(float motorOnePower READ motorOnePower NOTIFY motorOnePowerChanged)
     Q_PROPERTY(float motorTwoPower READ motorTwoPower NOTIFY motorTwoPowerChanged)
-
 
     explicit SelectedElementData(QObject *parent = NULL);
 
@@ -28,11 +27,10 @@ signals:
     void motorOnePowerChanged(float power);
     void motorTwoPowerChanged(float power);
 private:
-    float _energy;
-    float _motorOnePower;
-    float _motorTwoPower;
+    float m_energy;
+    float m_motorOnePower;
+    float m_motorTwoPower;
 };
-
 
 class MapView : public QQuickItem
 {
@@ -47,10 +45,8 @@ public:
 
 protected:
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *);
-    //void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
 
     void mousePressEvent(QMouseEvent *event);
-    //void mouseMoveEvent(QMouseEvent *event);
 
     Map* map();
     void setMap(Map* map);
@@ -58,18 +54,16 @@ protected:
 signals:
     void selectedElementChanged(SelectedElementData* elem);
 
-public slots:
-
 private slots:
     void valuesChanged();
     void structureChanged();
 
 private:
-    SelectedElementData* _selectedElement;
-    Map* _map;
-    AnimalNode* aNode;
-    bool _valuesChanged = true;
-    bool _structureChanged = true;
+    SelectedElementData* m_selectedElement;
+    Map* m_map;
+    AnimalNode* m_aNode;
+    bool m_valuesChanged = true;
+    bool m_structureChanged = true;
 
 };
 

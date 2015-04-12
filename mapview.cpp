@@ -1,41 +1,37 @@
 #include "mapview.h"
 
-
 SelectedElementData::SelectedElementData(QObject* parent):
     QObject(parent)
 {
-    _energy = 0;
+    m_energy = 0;
 }
 
 float SelectedElementData::energy(){
-    return _energy;
+    return m_energy;
 }
 
-float SelectedElementData::motorOnePower()
-{
-    return _motorOnePower;
+float SelectedElementData::motorOnePower(){
+    return m_motorOnePower;
 }
 
-float SelectedElementData::motorTwoPower()
-{
-    return _motorTwoPower;
+float SelectedElementData::motorTwoPower(){
+    return m_motorTwoPower;
 }
 
-void SelectedElementData::update(LivingElement* element)
-{
-    _energy = element->energy();
-    _motorOnePower = element->getMotors()[0]._power;
-    _motorTwoPower = element->getMotors()[1]._power;
-    emit energyChanged(_energy);
-    emit motorOnePowerChanged(_motorOnePower);
-    emit motorTwoPowerChanged(_motorTwoPower);
+void SelectedElementData::update(LivingElement* element){
+    m_energy = element->energy();
+    m_motorOnePower = element->getMotors()[0]._power;
+    m_motorTwoPower = element->getMotors()[1]._power;
+    emit energyChanged(m_energy);
+    emit motorOnePowerChanged(m_motorOnePower);
+    emit motorTwoPowerChanged(m_motorTwoPower);
 }
 
 
 MapView::MapView(QQuickItem *parent) :
     QQuickItem(parent),
-    _map(nullptr),
-    _selectedElement(new SelectedElementData(this))
+    m_selectedElement(new SelectedElementData(this)),
+    m_map(nullptr)
 {
     setFlags(QQuickItem::ItemHasContents);
     setAcceptedMouseButtons(Qt::AllButtons);
@@ -43,81 +39,78 @@ MapView::MapView(QQuickItem *parent) :
 
 
 SelectedElementData*MapView::selectedElement() const{
-    return _selectedElement;
+    return m_selectedElement;
 }
 
-QSGNode*MapView::updatePaintNode(QSGNode* oldNode, QQuickItem::UpdatePaintNodeData*)
-{
-    if(!_map)
+QSGNode*MapView::updatePaintNode(QSGNode* oldNode, QQuickItem::UpdatePaintNodeData*){
+
+    if(!m_map)
         return oldNode;
 
     QSGNode* n = oldNode;
     if (!n) {
         n = new QSGNode;
     }
-    if(_structureChanged){
+    if(m_structureChanged){
         n->removeAllChildNodes();
-        for(int i=0; i<_map->getFoodElements().size(); i++){
-            n->appendChildNode(new FoodNode(_map->getFoodElements()[i]));
+        for(size_t i=0; i<m_map->getFoodElements().size(); i++){
+            n->appendChildNode(new FoodNode(m_map->getFoodElements()[i]));
         }
-        for(int i=0;i<_map->getAnimalElemensts().size(); i++){
-            n->appendChildNode(new AnimalNode(_map->getAnimalElemensts()[i]));
+        for(size_t i=0;i<m_map->getAnimalElemensts().size(); i++){
+            n->appendChildNode(new AnimalNode(m_map->getAnimalElemensts()[i]));
         }
 
-        _structureChanged = false;
+        m_structureChanged = false;
     }
-    if(_valuesChanged){
+    if(m_valuesChanged){
         for(int i=0; i<n->childCount();i++){
             static_cast<BaseNode*>(n->childAtIndex(i))->updateGeometry();
         }
-        _valuesChanged = false;
+        m_valuesChanged = false;
     }
 
     return n;
 }
 
-void MapView::mousePressEvent(QMouseEvent* event)
-{
-    if(!_map)
+void MapView::mousePressEvent(QMouseEvent* event){
+
+    if(!m_map)
         return;
 
 
-    for(LivingElement* elem : _map->getAnimalElemensts()){
+    for(LivingElement* elem : m_map->getAnimalElemensts()){
         QVector2D vec = QVector2D(elem->xPosition()-event->x(),elem->yPosition()-event->y());
         if(vec.length()<elem->radius()){
             elem->setSelected(true);
-            _selectedElement->update(elem);
-            _map->confirmValueChanges();
+            m_selectedElement->update(elem);
+            m_map->confirmValueChanges();
             break;
         }
         else{
             elem->setSelected(false);
-            _map->confirmValueChanges();
+            m_map->confirmValueChanges();
         }
     }
 
 }
 
 Map* MapView::map(){
-
+    return m_map;
 }
 
 void MapView::setMap(Map* map){
-    _map = map;
+    m_map = map;
     qDebug()<<"set map";
     connect(map,SIGNAL(valuesChanged()),this,SLOT(valuesChanged()));
     connect(map,SIGNAL(structureChanged()),this,SLOT(structureChanged()));
 }
 
 void MapView::valuesChanged(){
-    _valuesChanged = true;
+    m_valuesChanged = true;
     update();
 }
 
 void MapView::structureChanged(){
-    _structureChanged = true;
+    m_structureChanged = true;
     update();
 }
-
-
-

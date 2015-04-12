@@ -1,18 +1,16 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include <QRect>
+#include <QObject>
+#include <vector>
+
+class QQmlApplicationEngine;
 
 class PlantElement;
 class LivingElement;
+class Mutator;
 
-class Population;
-class Food;
-
-#include <vector>
-#include <QRect>
-#include <QObject>
-
-class QQmlApplicationEngine;
 
 class Map: public QObject
 {
@@ -20,36 +18,22 @@ class Map: public QObject
 
 public:
     explicit Map(int xSize, int ySize);
-
-    //For logic
+    ~Map();
 
     ///
     /// \brief addFood adds food into Food internal container
     /// \param food food element to be added
     ///
-    /// Adds food element into Food object container. Food elements
+    /// Adds food element into internal container. Food elements
     /// can be accessed using getFoodElements() function
     void addFood(PlantElement* food);
 
     ///
-    /// \brief addAnimal adds animal into Population internal container
+    /// \brief addAnimal adds animal into internal container
     /// \param element animal element to be added
     ///
+    /// Adds animal element into internal container.
     void addAnimal(LivingElement*element);
-
-    ///
-    /// \brief logPopulation used to save info about population
-    ///
-    /// Function uses Logger class to save information about each animal
-    /// into file for examination puproses
-    void logPopulation();
-
-    ///
-    /// \brief setNewPopulation swaps new population with current one
-    ///
-    /// Used to set new population of animals on the map. It's used mostly
-    /// when new generation of animals is created by Mutator class
-//    void setNewPopulation(Population *);
 
     ///
     /// \brief getFoodElements gives acces to food elements
@@ -80,8 +64,13 @@ public:
     /// PhysicsEngine
     QRect boundingRect();
 
-
-    void cleanDead();
+    ///
+    /// \brief cleanDead check is anyone is dead, then clean
+    ///
+    /// This function removes dead animals from internal container, then it calls
+    /// function to create new animal using mutator object
+    ///
+    void cleanDead(Mutator *mutator);
 
     void confirmValueChanges();
     void confirmStructureChanges();
@@ -91,11 +80,12 @@ signals:
     void structureChanged();
 private:
 
-    int _xSize;
-    int _ySize;
+    int m_xSize;
+    int m_ySize;
 
-    std::vector<PlantElement*> _foodElements;
-    std::vector<LivingElement*> _populationElements;
+    std::vector<PlantElement*> m_foodElements;
+    std::vector<LivingElement*> m_populationElements;
+
 };
 
 #endif // MAP_H

@@ -1,13 +1,13 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include "map.h"
-
-#include "basicmutator.h"
-#include "simplephysicsengine.h"
+#include <QObject>
 #include <QTimer>
 
-#include <QObject>
+#include "map.h"
+#include "basicmutator.h"
+#include "simplephysicsengine.h"
+
 ///
 /// \brief The Simulation class responsible for enviroment updates
 ///
@@ -22,6 +22,9 @@
 class Simulation: public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(int timePassed READ timePassed NOTIFY timePassedChanged)
+
 public:
 
     ///
@@ -32,6 +35,8 @@ public:
     ///
     explicit Simulation(Map *map, Mutator *mutator, PhysicsEngine* engine);
     ~Simulation();
+
+    int timePassed();
 
 public slots:
     ///
@@ -72,41 +77,28 @@ public:
     ///
     void setNewMap(Map* map);
 
-protected:
-
-    ///
-    /// \brief populationReady checks if population is ready to evolve
-    /// \return true if population is ready to evolve
-    ///
-    /// Population is ready to evolve if some condtion is fulfilled, eg. all LivingElements died
-    bool populationReady();
-
 private slots:
 
     ///
     /// \brief goOneStep update simulation by little amout of time
     ///
     /// This function is called by timer overflow when simulation is started. Elements position and
-    /// internal state is updated. If population is ready evolveAnimals function is called
+    /// internal state is updated
     ///
     void goOneStep();
 
 signals:
     void upadate();
 
+    void timePassedChanged(int timePassed);
 private:
 
-    ///
-    /// \brief evolveAnimals used to create new population from an old one
-    ///
-    /// If populationReady() returns true, then in means that population is ready to be evaluated and
-    /// modified by Mutator. This function is used to create new population and switch it with an old one
-    void evolveAnimals();
+    Map *m_map;
+    Mutator *m_mutator;
+    PhysicsEngine* m_pEngine;
+    QTimer m_timer;
 
-    Map *_map;
-    Mutator *_mutator;
-    PhysicsEngine* _pEngine;
-    QTimer _timer;
+    int m_timePassed;
 };
 
 #endif // SIMULATION_H

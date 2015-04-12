@@ -2,8 +2,8 @@
 
 PlantElement::PlantElement()
 {
-    _color = QColor(0,0,255,100);
-    _radius = 15;
+    m_color = QColor(0,0,255,100);
+    m_radius = 15;
 }
 
 PlantElement::~PlantElement()
@@ -11,28 +11,21 @@ PlantElement::~PlantElement()
 
 }
 
-void PlantElement::handleIntersection(Element* e)
-{
+void PlantElement::handleIntersection(Element* e){
     e->handleIntersection(this);
 }
 
-void PlantElement::handleIntersection(MeatEater* e)
-{
-    // Do nothing
-    ;
+void PlantElement::handleIntersection(MeatEater* e){
+    Q_UNUSED(e);
 }
 
-void PlantElement::handleIntersection(PlantEater* e)
-{
-    qDebug()<<"????";
-    _energy -= 1;
-    qDebug()<<_energy;
-    // Maybe here should be some kind of limited resources ( for now its unlimited so do nothing)
-    ;
+void PlantElement::handleIntersection(PlantEater* e){
+    Q_UNUSED(e);
+    m_energy -= 1;
 }
 
 void PlantElement::handleIntersection(PlantElement* e)
 {
-    // Do nothing, plants don't compete
-    ;
+    Q_UNUSED(e);
+    //Ignored
 }

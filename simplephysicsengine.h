@@ -5,7 +5,6 @@
 
 class LivingElement;
 
-
 class SimplePhysicsEngine : public PhysicsEngine
 {
 public:
@@ -13,7 +12,7 @@ public:
     virtual void updateEnviroment(Map& map);
 
 private:
-    float _suppression;
+    float m_suppression;
 };
 
 #endif // SIMPLEPHYSICSENGINE_H

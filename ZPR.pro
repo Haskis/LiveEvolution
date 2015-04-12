@@ -6,7 +6,6 @@ QT += qml quick widgets
 CONFIG += c++11
 
 LIBS += -lfann
-
 SOURCES += main.cpp \
     element.cpp \
     livingelement.cpp \
